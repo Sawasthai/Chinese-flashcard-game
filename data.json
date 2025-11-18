@@ -1,0 +1,52 @@
+{
+    "lessons": [
+        {
+            "id": 1,
+            "title": "บทที่ 1 : คำทักทาย",
+            "image": "/img/l1.png",  
+            "vocab": [
+                {"hanzi": "你好", "pinyin": "nǐ hǎo", "thai": "สวัสดี"},
+                {"hanzi": "早上好", "pinyin": "zǎo shang hǎo", "thai": "อรุณสวัสดิ์"},
+                {"hanzi": "再见", "pinyin": "zài jiàn", "thai": "ลาก่อน"},
+                {"hanzi": "谢谢", "pinyin": "xiè xie", "thai": "ขอบคุณ"},
+                {"hanzi": "对不起", "pinyin": "duì bu qǐ", "thai": "ขอโทษ"}
+            ]
+        },
+        {
+            "id": 2,
+            "title": "บทที่ 2 : ครอบครัว",
+            "image": "/img/l2.png",  
+            "vocab": [
+                {"hanzi": "爸爸", "pinyin": "bà ba", "thai": "พ่อ"},
+                {"hanzi": "妈妈", "pinyin": "mā ma", "thai": "แม่"},
+                {"hanzi": "哥哥", "pinyin": "gē ge", "thai": "พี่ชาย"},
+                {"hanzi": "姐姐", "pinyin": "jiě jie", "thai": "พี่สาว"},
+                {"hanzi": "弟弟", "pinyin": "dì di", "thai": "น้องชาย"}
+            ]
+        },
+        {
+            "id": 3,
+            "title": "บทที่ 3 : ตัวเลข",
+            "image": "/img/l3.png",  
+            "vocab": [
+                {"hanzi": "一", "pinyin": "yī", "thai": "หนึ่ง"},
+                {"hanzi": "二", "pinyin": "èr", "thai": "สอง"},
+                {"hanzi": "三", "pinyin": "sān", "thai": "สาม"},
+                {"hanzi": "四", "pinyin": "sì", "thai": "สี่"},
+                {"hanzi": "五", "pinyin": "wǔ", "thai": "ห้า"}
+            ]
+        },
+        {
+            "id": 4,
+            "title": "บทที่ 4 : อาหารและเครื่องดื่ม",
+            "image": "/img/l4.png",  
+            "vocab": [
+                {"hanzi": "米饭", "pinyin": "mǐ fàn", "thai": "ข้าวสวย"},
+                {"hanzi": "面条", "pinyin": "miàn tiáo", "thai": "ก๋วยเตี๋ยว"},
+                {"hanzi": "水", "pinyin": "shuǐ", "thai": "น้ำ"},
+                {"hanzi": "茶", "pinyin": "chá", "thai": "ชา"},
+                {"hanzi": "咖啡", "pinyin": "kā fēi", "thai": "กาแฟ"}
+            ]
+        }
+      ]
+}

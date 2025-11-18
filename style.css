@@ -1,0 +1,195 @@
+/* Custom Fonts */
+body {
+    font-family: 'Noto Sans Thai', sans-serif;
+    background-color: #fcfcfc; /* พื้นหลังสีขาวนวล */
+}
+
+/* Chinese Title Style */
+.chinese-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2.5rem;
+    color: #a52a2a; /* สีน้ำตาลแดงแบบจีน */
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+}
+
+.chinese-title .hanzi {
+    display: block;
+    font-size: 1.5em; /* ตัวอักษรหลักใหญ่กว่า */
+    line-height: 1.2;
+}
+
+.chinese-title .pinyin {
+    display: block;
+    font-size: 1em; /* คำอ่านเล็กกว่า */
+    opacity: 0.7;
+    font-family: 'Noto Sans Thai', sans-serif; /* คำอ่านใช้ฟอนต์ปกติ */
+}
+
+
+/* Lesson Cards Style */
+.lesson-card {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #fff0f0 0%, #ffebeb 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-height: 250px; /* ปรับ min-height ให้เหมาะสม */
+    
+    /* ----- เพิ่ม/แก้ไข 2 บรรทัดนี้ ----- */
+    width: 100%; /* ให้การ์ดใช้ความกว้างที่มีทั้งหมดก่อน */
+    max-width: 250px; /* ⬅️ กำหนดความกว้างสูงสุดคงที่ (Fix Width) */
+    /* ---------------------------------- */
+    
+    margin: 0 auto; /* จัดให้อยู่ตรงกลางของพื้นที่ col */
+}
+
+.lesson-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.lesson-card-img {
+    width: 100%;
+    height: 250px; /* หรือความสูงที่คุณต้องการ */
+    object-fit: cover;
+    /* ----- เพิ่ม/แก้ไขบรรทัดนี้ ----- */
+    object-position: center 30%; /* ⬅️ ลองปรับค่า % นี้ดู */
+    /* ------------------------------ */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    font-weight: bold;
+    color: #a52a2a;
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1rem;
+}
+
+/* Post-it Card Style (สำหรับ Quiz/Result) */
+.post-it-card {
+    border: none;
+    border-radius: 15px;
+    background-color: #fffacd; /* สีเหลืองอ่อนเหมือน Post-it */
+    box-shadow: 5px 5px 0px 0px rgba(255, 204, 0, 0.5); /* เงาเหมือนกระดาษกาว */
+    
+    width: 100%;
+    max-width: 300px; 
+}
+
+/* Flashcard Styles (Flipping Effect) */
+.flip-card {
+    background-color: transparent;
+    width: 300px;
+    height: 400px;
+    perspective: 1000px; /* ช่วยในการมองเห็น 3D effect */
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 15px;
+}
+
+/* เมื่อมีคลาส 'flipped' ให้ทำการพลิก */
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* ซ่อนด้านหลังเมื่อพลิก */
+    backface-visibility: hidden;
+    border-radius: 15px;
+}
+
+.flip-card-front {
+    background-color: #e6f7ff; /* สีฟ้าอ่อนๆ สำหรับด้านหน้า */
+    color: #333;
+    cursor: pointer;
+}
+
+.flip-card-back {
+    background-color: #d1ffc9; /* สีเขียวอ่อนๆ สำหรับด้านหลัง (คำแปล) */
+    color: #333;
+    transform: rotateY(180deg);
+    cursor: pointer;
+}
+
+.vocab-hanzi {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #007bff;
+    line-height: 1;
+}
+
+.vocab-pinyin {
+    font-size: 2rem;
+    color: #6c757d;
+}
+
+.vocab-thai {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: 'Ma Shan Zheng', cursive;
+    color: #28a745;
+}
+
+/* Quiz UI Styles */
+.quiz-hanzi {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #a52a2a;
+}
+
+.quiz-pinyin {
+    font-size: 1.5rem;
+    color: #6c757d;
+}
+
+.feedback-text {
+    font-weight: bold;
+    min-height: 25px; /* กันการกระโดดของ Layout */
+}
+
+.correct {
+    color: #28a745;
+    font-family: 'Ma Shan Zheng', cursive;
+}
+
+.incorrect {
+    color: #dc3545;
+    font-family: 'Ma Shan Zheng', cursive;
+}
+
+/* Quiz Option Button Hover */
+.quiz-option-btn {
+    transition: background-color 0.2s ease;
+}
+
+.quiz-option-btn:not([disabled]):hover {
+    background-color: #ff9c07; /* เปลี่ยนเป็นสีส้มเมื่อ hover */
+    color: #212529;
+}
+
+/* Custom Fonts */
+body {
+    font-family: 'Noto Sans Thai', sans-serif;
+    /* ⬅️ ลบบรรทัด background-color: #fcfcfc; ออก หรือคอมเมนต์ไว้ */
+
+    /* --- โค้ดสำหรับ Background Image เริ่มต้นตรงนี้ --- */
+    background-image: url('img/background.png'); /* ⬅️ เปลี่ยนชื่อไฟล์ให้ตรงกับที่คุณบันทึก */
+    background-size: cover;                      /* ปรับขนาดรูปภาพให้เต็มพื้นที่ */
+    background-repeat: no-repeat;                /* ไม่ให้รูปภาพซ้ำ */
+    background-attachment: fixed;                /* ทำให้พื้นหลังอยู่นิ่ง ไม่เลื่อนตามการ Scroll */
+    background-position: center center;          /* จัดตำแหน่งรูปภาพให้อยู่กึ่งกลาง */
+    /* --- สิ้นสุดโค้ดสำหรับ Background Image --- */
+}
