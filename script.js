@@ -177,7 +177,7 @@ function updateFlashcard() {
     }
 }
 
-// Event Listeners for Flashcard UI
+
 // Event Listeners for Flashcard UI
 flashcardContainer.addEventListener('click', () => {
     flashcardContainer.classList.toggle('flipped');
