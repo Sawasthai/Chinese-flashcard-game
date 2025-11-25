@@ -21,8 +21,7 @@ body {
     max-width: 900px; 
     width: 90%; /* 🔒 Fixed width - ไม่ยืดหด */
     margin: 40px auto 30px auto; /* จัดให้อยู่กึ่งกลางหน้าจอ */
-    padding: 15px 30px; 
-    padding-top: 52px;
+    padding: 52px 30px 15px;
     height: 190px;
     
     
@@ -44,7 +43,7 @@ body {
 
 .chinese-title .hanzi {
     display: block;
-    font-size: 3rem; /* ตัวอักษรหลักใหญ่กว่า */
+    font-size: 2.5rem; /* ตัวอักษรหลักใหญ่กว่า */
     line-height: 1.2;
     font-family: 'Sukhumvit Set', 'Kanit', 'Prompt', 'Tahoma', 'Thonburi', sans-serif;
     color: #a52a2a; /* เก็บสีตัวอักษรให้เข้ากับป้าย */
@@ -52,7 +51,7 @@ body {
 
 .chinese-title .pinyin {
     display: block;
-    font-size: 3rem; /* คำอ่านเล็กกว่า */
+    font-size: 2.5rem; 
     line-height: 1.2;
     font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; /* คำอ่านใช้ฟอนต์ปกติ */
     color: #ff7700;
@@ -174,10 +173,27 @@ body {
     color: #000000; 
 }
 
-/* 💡 Media Query สำหรับมือถือ (ปรับขนาด Flashcard ให้สั้นลง) */
-@media (max-height: 700px) {
-    .flip-card {
-        height: 450px;
+/* =============================
+   Mobile fix for small screens
+============================= */
+@media (max-width: 500px) {
+    /* ลด font-size เพื่อไม่ให้ title ขึ้นบรรทัดเพิ่ม */
+    .chinese-title .hanzi {
+        font-size: 2rem; /* จาก 3rem */
+        line-height: 1.1;
+    }
+    .chinese-title .pinyin {
+        font-size: 1.5rem; /* จาก 3rem */
+        line-height: 1.1;
+    }
+
+    /* ลดความสูง / padding ของ title */
+    .chinese-title {
+        height: 150px;   /* จาก 190px */
+        padding-top: 30px; /* จาก 52px */
+        margin: 20px auto;
+        background-size: contain; /* ให้ cloud fit ในพื้นที่ใหม่ */
+        background-position: center center;
     }
 }
 
