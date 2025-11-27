@@ -243,8 +243,16 @@ body {
     }
 
     #lesson-cards {
-        gap: 15px;
+    display: flex;           
+    flex-wrap: wrap;         
+    justify-content: center; 
+    gap: 15px;
+    margin-left: auto;       
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     }
+
 }
 
 
