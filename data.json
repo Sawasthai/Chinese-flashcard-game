@@ -113,7 +113,7 @@
         },
         {
             "id": 6,
-            "title": "บทที่ 6 : สถานที่",
+            "title": "บทที่ 6 : คำศัพท์สถานที่",
             "image": "/img/l6.webp",  
             "vocab": [
                 {"hanzi": "家", "pinyin": "Jiā", "thai": "บ้าน", "image": "vocab-img/6house.webp", "audio": "audio/6house.mp3"},

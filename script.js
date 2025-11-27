@@ -16,7 +16,7 @@ const nextBtn = document.getElementById('next-btn');
 const testReadyBtn = document.getElementById('test-ready-btn');
 const backToMainBtn = document.getElementById('back-to-main-btn');
 
-// 💡 เพิ่ม 3 ตัวแปรใหม่สำหรับ รูปภาพและเสียง
+// เพิ่ม 3 ตัวแปรใหม่สำหรับ รูปภาพและเสียง
 const vocabImage = document.getElementById('vocab-image'); 
 const audioBtn = document.getElementById('audio-btn');     
 const vocabAudio = document.getElementById('vocab-audio');
@@ -67,7 +67,7 @@ async function loadData() {
         allLessons = data.lessons;
         renderLessonCards();
     } catch (error) {
-        console.error('Error loading JSON data:', error);
+        console.error('เกิดข้อผิดพลาดในการโหลด JSON:', error);
         alert('เกิดข้อผิดพลาดในการโหลดข้อมูลคำศัพท์');
     }
 }
@@ -88,7 +88,7 @@ function renderLessonCards() {
                         class="lesson-card-img" 
                         alt="${lesson.title}" 
                         onerror="this.onerror=null;this.src='';"
-                        loading="lazy"
+
                     />
                     <div class="card-body d-flex flex-column justify-content-end">
                         <h5 class="card-title">${lesson.title}</h5>
@@ -100,11 +100,11 @@ function renderLessonCards() {
 
     lessonCardsContainer.innerHTML = html;
 
-    // ✔ ต้องอยู่ในนี้
+    // เพิ่ม Event Listener ให้การ์ดแต่ละใบ
     document.querySelectorAll('.lesson-card').forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', async () => {
             const lessonId = parseInt(card.getAttribute('data-lesson-id'));
-            startLesson(lessonId);
+            await startLesson(lessonId);
         });
     });
 }
@@ -115,7 +115,7 @@ function renderLessonCards() {
  * เริ่มบทเรียนที่เลือก
  * @param {number} lessonId - ID ของบทเรียน
  */
-function startLesson(lessonId) {
+async function startLesson(lessonId) {
     currentLessonId = lessonId;
     const lesson = allLessons.find(l => l.id === lessonId);
     if (!lesson) return;
@@ -126,28 +126,42 @@ function startLesson(lessonId) {
     // ตั้งค่าชื่อบทเรียน
     lessonTitleDisplay.forEach(el => el.textContent = lesson.title);
 
-
-    // ✅ Preload รูปแรกและเสียงแรก พร้อมแสดง UI ทันที
-    if (currentLessonVocab.length > 0) {
-        const firstVocab = currentLessonVocab[0];
-        
-        // Preload รูปแรก (ไม่ต้องรอ)
-        if (firstVocab.image) {
-            const preloadImg = new Image();
-            preloadImg.src = firstVocab.image;
-        }
-        
-        // Preload เสียงแรก (ไม่ต้องรอ)
-        if (firstVocab.audio) {
-            const audioPreload = new Audio(firstVocab.audio);
-            audioPreload.preload = "auto";
+    // 🔥 รอให้รูปแรกโหลดเสร็จก่อนแสดง UI
+    if (currentLessonVocab.length > 0 && currentLessonVocab[0].image) {
+        try {
+            await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve();
+                img.onerror = () => reject(new Error('โหลดรูปแรกล้มเหลว'));
+                img.src = currentLessonVocab[0].image;
+            });
+        } catch (error) {
+            console.warn('โหลดรูปแรกไม่สำเร็จ:', error);
         }
     }
 
-    // ✅ แสดง UI ทันทีโดยไม่ต้องรอโหลดรูป
+    // 🚀 โหลดรูปและเสียงทั้งหมดในเบื้องหลัง (ไม่ต้องรอ)
+    preloadAllVocab(currentLessonVocab);
+
+    // ✅ แสดง UI
     updateFlashcard();
     switchUI(flashcardUI);
+}
 
+/**
+ * โหลดรูป + เสียงคำศัพท์ทั้งหมดในเบื้องหลัง
+ */
+function preloadAllVocab(vocabList) {
+    vocabList.forEach(vocab => {
+        if (vocab.image) {
+            const img = new Image();
+            img.src = vocab.image;
+        }
+        if (vocab.audio) {
+            const audio = new Audio(vocab.audio);
+            audio.preload = "auto";
+        }
+    });
 }
 
 /**
@@ -161,57 +175,24 @@ function updateFlashcard() {
     vocabPinyin.textContent = vocab.pinyin;
     vocabThai.textContent = vocab.thai;
     
-    // 💡 1. โค้ดสำหรับรูปภาพ
+    // โค้ดสำหรับรูปภาพ
     if (vocab.image) {
-        vocabImage.style.opacity = '0'; 
         vocabImage.classList.remove('d-none');
-
-        // 1.2 กำหนด src เพื่อให้เบราว์เซอร์เริ่มโหลด (ซึ่งจะถูกจัดการโดย loading="lazy" ใน HTML)
         vocabImage.src = vocab.image;
-
-        // 1.3 เมื่อโหลดเสร็จ (แม้จะเป็น Lazy Load) ให้แสดงผล
-        vocabImage.onload = () => {
-            vocabImage.style.opacity = '1'; 
-            vocabImage.onload = null; // ป้องกันการเรียกซ้ำ
-        };
-        // 1.4 จัดการกรณีที่ภาพถูกโหลดจาก cache แล้ว (onload อาจไม่ทำงาน)
-        if (vocabImage.complete) {
-            vocabImage.style.opacity = '1';
-        }
+        vocabImage.style.opacity = '1'; // แสดงทันที (เพราะ preload ไว้แล้ว)
     } else {
         vocabImage.src = '';
-        vocabImage.classList.add('d-none'); // ซ่อนถ้าไม่มีรูปใน JSON
+        vocabImage.classList.add('d-none');
     }
 
     
-    // 💡 2. โค้ดสำหรับเสียง
-    // ใช้ค่าจาก property 'audio' ที่ระบุใน JSON โดยตรง
+    // โค้ดสำหรับเสียง
     if (vocab.audio) {
         vocabAudio.src = vocab.audio;
     } else {
-    // Logic หากไม่มีไฟล์เสียง
-        console.warn("Audio path not defined for:", vocab.hanzi);
+        console.warn("ไม่มีไฟล์เสียงสำหรับ:", vocab.hanzi);
         vocabAudio.src = '';
     }
-
-    // ✅ Preload รูป + เสียงคำศัพท์ถัดไป
-    const nextIndex = currentVocabIndex + 1;
-    if (nextIndex < currentLessonVocab.length) {
-        const nextVocab = currentLessonVocab[nextIndex];
-    
-    // Preload รูป
-        if (nextVocab.image) {
-            const img = new Image();
-            img.src = nextVocab.image;
-        }
-
-    // Preload เสียง
-        if (nextVocab.audio) {
-            const audio = new Audio(nextVocab.audio);
-            audio.preload = "auto";
-        }
-    }
-
 
     // รีเซ็ตการพลิก
     flashcardContainer.classList.remove('flipped');
@@ -227,14 +208,12 @@ function updateFlashcard() {
         testReadyBtn.classList.add('d-none');
     }
 }
-
-
 // Event Listeners for Flashcard UI
 flashcardContainer.addEventListener('click', () => {
     flashcardContainer.classList.toggle('flipped');
 });
 
-// 💡 เพิ่ม Event Listener สำหรับปุ่มเสียง
+// Event Listener สำหรับปุ่มเสียง
 audioBtn.addEventListener('click', (e) => {
     e.stopPropagation();
 
@@ -243,7 +222,7 @@ audioBtn.addEventListener('click', (e) => {
     }
 
     vocabAudio.currentTime = 0;
-    vocabAudio.play().catch(err => console.warn(err));
+    vocabAudio.play().catch(err => console.warn('เล่นเสียงไม่สำเร็จ:', err));
 });
 
 nextBtn.addEventListener('click', () => {
@@ -271,10 +250,10 @@ testReadyBtn.addEventListener('click', () => {
 // --- Quiz UI Logic ---
 
 /**
- * เริ่มแบบทดสอบ
+ * ฟังก์ชันสุ่มแบบปลอดภัยกว่า sort()
  */
 
-// ฟังก์ชันสุ่มแบบปลอดภัยกว่า sort()
+
 function shuffleArray(array) {
     return array
         .map(item => ({ item, sort: Math.random() }))
@@ -282,6 +261,9 @@ function shuffleArray(array) {
         .map(({ item }) => item);
 }
 
+/**
+ * เริ่มแบบทดสอบ
+ */
 function startQuiz() {
     score = 0;
     currentQuizIndex = 0;
@@ -322,7 +304,7 @@ function loadQuizQuestion() {
         const randomIndex = Math.floor(Math.random() * allThaiTranslations.length);
         const randomTranslation = allThaiTranslations[randomIndex];
         if (randomTranslation !== correctTranslation && !incorrectOptions.includes(randomTranslation)) {
-        incorrectOptions.push(randomTranslation);
+            incorrectOptions.push(randomTranslation);
         }
     }
 
@@ -357,7 +339,7 @@ function handleAnswer(selectedAnswer, correctAnswer) {
         quizFeedback.classList.remove('incorrect');
         quizFeedback.classList.add('correct');
     } else {
-        quizFeedback.textContent = `❌ อาจจะยังน้าาา อันนี้แปลว่า ${correctAnswer}`;
+        quizFeedback.textContent = `❌ อาจจะยังน้ааา อันนี้แปลว่า ${correctAnswer}`;
         quizFeedback.classList.remove('correct');
         quizFeedback.classList.add('incorrect');
     }
